@@ -141,7 +141,7 @@ export default function Home() {
         Download
       </a>
       <a href="/privacy-policy" className="hover:text-gray-300 transition duration-300">
-        Privacy Policy2
+        Privacy Policy
       </a>
     </div>
   </nav>
