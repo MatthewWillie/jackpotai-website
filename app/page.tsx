@@ -125,24 +125,28 @@ export default function Home() {
 
       {/* Glassmorphic Navigation Bar */}
       <header className="sticky top-0 z-50 bg-black/50 backdrop-blur-sm border-b border-white/20">
-        <nav className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-3">
-            <Image src="/logo.png" alt="JackpotAI Logo" width={55} height={55} loading="lazy" />
-            <h1 className="text-2xl font-bold tracking-wide">JackpotAI</h1>
-          </div>
-          <div className="space-x-6 hidden md:flex">
-            <a href="#features" className="hover:text-gray-300 transition duration-300">
-              Features
-            </a>
-            <a href="#how-it-works" className="hover:text-gray-300 transition duration-300">
-              How It Works
-            </a>
-            <a href="#download" className="hover:text-gray-300 transition duration-300">
-              Download
-            </a>
-          </div>
-        </nav>
-      </header>
+  <nav className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
+    <div className="flex items-center space-x-3">
+      <Image src="/logo.png" alt="JackpotAI Logo" width={55} height={55} loading="lazy" />
+      <h1 className="text-2xl font-bold tracking-wide">JackpotAI</h1>
+    </div>
+    <div className="space-x-6 hidden md:flex">
+      <a href="#features" className="hover:text-gray-300 transition duration-300">
+        Features
+      </a>
+      <a href="#how-it-works" className="hover:text-gray-300 transition duration-300">
+        How It Works
+      </a>
+      <a href="#download" className="hover:text-gray-300 transition duration-300">
+        Download
+      </a>
+      <a href="/privacy-policy" className="hover:text-gray-300 transition duration-300">
+        Privacy Policy2
+      </a>
+    </div>
+  </nav>
+</header>
+
 
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center text-center px-6 py-20">
