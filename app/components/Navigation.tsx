@@ -41,8 +41,12 @@ export default function Navigation() {
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center">
+        {/* Logo - Fixed with aria-label */}
+        <Link 
+          href="/" 
+          aria-label="JackpotAI Homepage"
+          className="flex items-center"
+        >
           <div className="relative h-10 w-10 mr-3">
             <Image
               src="/app-icon-small.png"
@@ -68,6 +72,7 @@ export default function Navigation() {
               {link.name}
             </Link>
           ))}
+          
           <a
             href="https://apps.apple.com/us/app/jackpotai/id6444195595"
             target="_blank"
@@ -78,10 +83,11 @@ export default function Navigation() {
           </a>
         </nav>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button - Fixed with aria-label */}
         <button
           className="md:hidden text-white"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
         >
           {isMobileMenuOpen ? (
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -116,6 +122,7 @@ export default function Navigation() {
                   {link.name}
                 </Link>
               ))}
+              
               <a
                 href="https://apps.apple.com/us/app/jackpotai/id6444195595"
                 target="_blank"
