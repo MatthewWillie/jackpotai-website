@@ -1,261 +1,810 @@
-// app/page.tsx
+'use client';
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { motion, useAnimation } from "framer-motion";
+import Link from "next/link";
+import Script from "next/script";
+import { useInView } from "react-intersection-observer";
+import Navigation from "./components/Navigation";
 
-// Page-level SEO & ASO metadata
-export const metadata = {
-  title: "JackpotAI - AI-Powered Lottery Number Generator for Powerball & Mega Millions",
-  description:
-    "JackpotAI is the most advanced AI-powered lottery number generator. Get AI-driven Powerball & Mega Millions predictions based on historical data & trends.",
-  keywords: [
-    "lottery number generator",
-    "AI lottery picks",
-    "Powerball predictions",
-    "Mega Millions AI",
-    "JackpotAI",
-    "lottery app",
-    "best lottery strategy",
-    "how to win the lottery",
-  ],
-  alternates: {
-    canonical: "https://jackpotai.app",
-  },
-  viewport: "width=device-width, initial-scale=1",
-  openGraph: {
-    title: "JackpotAI - AI Lottery Number Generator for Powerball & Mega Millions",
-    description:
-      "Win smarter! JackpotAI uses AI to generate winning lottery numbers based on historical trends.",
-    url: "https://jackpotai.app",
-    images: ["/appIcon.png"],
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "JackpotAI - AI Lottery Number Generator",
-    description:
-      "Boost your winning chances with JackpotAI – AI-powered lottery number predictions for Powerball & Mega Millions.",
-    images: ["/appIcon.png"],
-  },
-};
+// Define types for our components
+interface AppImage {
+  src: string;
+  alt: string;
+}
 
-// JSON-LD Structured Data for SEO & ASO (Software Application)
-const jsonLd = {
+interface Feature {
+  title: string;
+  description: string;
+  icon: string;
+  gradient: string;
+}
+
+interface Step {
+  number: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface Testimonial {
+  quote: string;
+  name: string;
+  title: string;
+  avatar: string;
+}
+
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+// SEO-optimized structured data
+const structuredData = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "MobileApplication",
   "name": "JackpotAI",
   "operatingSystem": "iOS",
-  "applicationCategory": "GameApplication",
-  "screenshot": [
-    "/Preview1.png",
-    "/Preview3.png",
-    "/Preview4.png",
-    "/Preview6.png"
-  ],
+  "applicationCategory": "UtilitiesApplication",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "5.0",
     "ratingCount": "4"
   },
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-};
-
-// JSON-LD Structured Data for Breadcrumbs
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://jackpotai.app"
-    }
-  ]
-};
-
-// JSON-LD Structured Data for FAQ
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How does JackpotAI work?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "JackpotAI uses AI to analyze historical lottery data to find number trends and generate optimized lottery picks."
-      }
-    }
-  ]
+  "description": "JackpotAI uses artificial intelligence to analyze lottery data and generate optimized number combinations for Powerball, Mega Millions, EuroMillions, and more."
 };
 
 export default function Home() {
-  const previewImages = [
-    "/Preview1.png",
-    "/Preview3.png",
-    "/Preview4.png",
-    "/Preview6.png",
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  
+  // Detect mobile device for responsive adjustments
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // App preview images - optimized for SEO with descriptive filenames
+  const previewImages: AppImage[] = [
+    {
+      src: "/jackpotai-powerball-screen.png",
+      alt: "JackpotAI Powerball Number Generator Screen",
+    },
+    {
+      src: "/jackpotai-megamillions-screen.png",
+      alt: "JackpotAI Mega Millions Analysis Screen",
+    },
+    {
+      src: "/jackpotai-aimode-screen.png",
+      alt: "JackpotAI AI Mode Feature Screen",
+    },
+    {
+      src: "/jackpotai-results-screen.png",
+      alt: "JackpotAI Lottery Results Screen",
+    },
   ];
+
+  // Animation for elements as they come into view
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  };
 
   return (
     <>
-      {/* Inject JSON-LD Structured Data */}
-      <script
+      <Script
+        id="lottery-app-schema"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      {/* Deep Linking Meta for App Stores */}
-      <meta name="apple-itunes-app" content="app-id=6444195595, app-argument=jackpotai://" />
-      <meta name="google-play-app" content="app-id=com.jackpotai, app-argument=jackpotai://" />
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 to-black text-white">
+        <Navigation />
+        
+        {/* Hero Section - Optimized for conversions and ASO */}
+        <section className="relative py-20 md:py-32 overflow-hidden">
+          {/* Background elements */}
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-600/10 via-purple-600/10 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob" />
+            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000" />
+            <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000" />
+          </div>
 
-      {/* Glassmorphic Navigation Bar */}
-      <header className="sticky top-0 z-50 bg-black/50 backdrop-blur-sm border-b border-white/20">
-  <nav className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
-    <div className="flex items-center space-x-3">
-      <Image src="/logo.png" alt="JackpotAI Logo" width={55} height={55} loading="lazy" />
-      <h1 className="text-2xl font-bold tracking-wide">JackpotAI</h1>
-    </div>
-    <div className="space-x-6 hidden md:flex">
-      <a href="#features" className="hover:text-gray-300 transition duration-300">
-        Features
-      </a>
-      <a href="#how-it-works" className="hover:text-gray-300 transition duration-300">
-        How It Works
-      </a>
-      <a href="#download" className="hover:text-gray-300 transition duration-300">
-        Download
-      </a>
-      <a href="/privacy-policy" className="hover:text-gray-300 transition duration-300">
-        Privacy Policy
-      </a>
-    </div>
-  </nav>
-</header>
-
-
-      {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center text-center px-6 py-20">
-        {/* Clickable Glassmorphic App Store Card */}
-        <a
-          href="https://apps.apple.com/us/app/jackpotai/id6444195595"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-300 max-w-3xl mx-auto block"
-        >
-          <div className="bg-white/10 backdrop-blur-lg border border-white/20 p-8 rounded-3xl shadow-2xl flex flex-col md:flex-row items-center transition transform hover:scale-105 hover:bg-white/15 cursor-pointer">
-            <div className="flex-shrink-0">
-              <Image
-                src="/appIcon.png"
-                alt="JackpotAI App Icon"
-                width={180}
-                height={180}
-                loading="lazy"
-                className="rounded-3xl"
-              />
-            </div>
-            <div className="mt-4 md:mt-0 md:ml-6 text-left">
-              <h2 className="text-3xl font-extrabold">JackpotAI</h2>
-              <p className="text-gray-300 mt-1">AI Lottery Number Generator</p>
-              <p className="text-blue-400 font-medium mt-1">by Matthew Willie</p>
-              <p className="text-gray-400 mt-1">Designed for iPhone</p>
-              <div className="flex items-center mt-2">
-                <span className="text-yellow-500 text-xl">★★★★★</span>
-                <span className="text-gray-400 ml-3">5.0 • 4 Ratings</span>
-              </div>
-              <p className="text-gray-400 mt-2">Free • Offers In-App Purchases</p>
+          <div className="container mx-auto px-6">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+              {/* Hero text content - SEO optimized */}
+              <motion.div 
+                className="w-full md:w-1/2 text-center md:text-left"
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUp}
+              >
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-400">
+                  Win Smarter with AI Lottery Predictions
+                </h1>
+                
+                <p className="text-lg md:text-xl text-gray-300 mb-8">
+                  JackpotAI analyzes millions of historical lottery results to generate optimized number combinations with the highest probability of winning. Available for Powerball, Mega Millions, EuroMillions, and more.
+                </p>
+                
+                {/* App Store badge - essential for ASO */}
+                <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
+                  <a 
+                    href="https://apps.apple.com/us/app/jackpotai/id6444195595" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="transform transition hover:scale-105"
+                    aria-label="Download JackpotAI on the App Store"
+                  >
+                    <Image 
+                      src="/app-store-badge.svg" 
+                      alt="Download on the App Store" 
+                      width={200} 
+                      height={67} 
+                      priority
+                    />
+                  </a>
+                  
+                  {/* App rating badge - boosts social proof */}
+                  <div className="flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full">
+                    <div className="flex text-yellow-400 mr-2">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                          <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                        </svg>
+                      ))}
+                    </div>
+                    <span className="text-white text-sm font-medium">5.0 (4 Ratings)</span>
+                  </div>
+                </div>
+              </motion.div>
+              
+              {/* App preview mockup - visually appealing */}
+              <motion.div 
+                className="w-full md:w-1/2"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+              >
+                <div className="relative mx-auto max-w-xs md:max-w-md">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl blur-xl opacity-25 transform -rotate-6"></div>
+                  <Image
+                    src="/app-mockup-main.png"
+                    alt="JackpotAI App Interface showing lottery number generator"
+                    width={380}
+                    height={770}
+                    className="relative rounded-3xl border border-white/20 shadow-2xl"
+                    priority
+                  />
+                  <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-blue-500/20 to-transparent h-1/3 rounded-t-3xl"></div>
+                </div>
+              </motion.div>
             </div>
           </div>
-        </a>
+        </section>
 
-        <h1 className="text-5xl md:text-6xl font-extrabold mt-12 tracking-tight">
-          AI-Powered Lottery Number Generator
-        </h1>
-        <p className="text-lg md:text-xl text-gray-300 mt-6 max-w-2xl">
-          Boost your chances of winning with our AI-driven predictions and historical trend analysis.
-        </p>
+        {/* Features Section - Showcasing app capabilities for SEO */}
+        <FeatureSection isMobile={isMobile} />
 
-        {/* Internal Linking for SEO */}
-        <a href="#features" className="text-blue-400 underline mt-4 inline-block">
-          Learn more about our AI predictions
-        </a>
+        {/* App Screenshots - Visual proof and ASO */}
+        <AppScreenshotsSection images={previewImages} />
 
-        {/* Preview Images in a Glassmorphic Grid */}
-        <div className="mx-auto mt-12 flex flex-wrap justify-center gap-6">
-          {previewImages.map((src, i) => (
-            <div
-              key={i}
-              className="relative w-[220px] md:w-[220px] h-auto bg-white/10 border border-white/20 rounded-xl backdrop-blur-md p-2 shadow-lg transition transform hover:scale-105"
-            >
-              <Image
-                src={src}
-                alt={`App Preview ${i + 1}`}
-                width={220}
-                height={440}
-                loading="lazy"
-                className="rounded-lg"
-              />
-            </div>
-          ))}
-        </div>
+        {/* How It Works - Educational content for SEO */}
+        <HowItWorksSection />
 
-        {/* Download Button */}
-        <a
-          href="https://apps.apple.com/us/app/jackpotai/id6444195595"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button className="mt-10 bg-blue-500 hover:bg-blue-600 text-white px-12 py-6 rounded-full shadow-lg transition transform hover:scale-110">
-            Download the App
-          </Button>
-        </a>
-      </section>
+        {/* Testimonials - Social proof and credibility */}
+        <TestimonialsSection />
 
-      {/* Features Section */}
-      <section id="features" className="px-8 py-20">
-        <h2 className="text-3xl md:text-4xl font-bold text-center">Why Choose JackpotAI?</h2>
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[
-            { title: "Smart AI Predictions", description: "Our AI analyzes past lottery results to provide optimal number combinations." },
-            { title: "Real-Time Updates", description: "Stay updated with the latest lottery results and trends as they happen." },
-            { title: "Secure & Private", description: "Your data is encrypted and stored securely to protect your privacy." }
-          ].map((feature, i) => (
-            <Card key={i} className="border border-white/20 bg-white/10 backdrop-blur-md shadow-lg rounded-2xl transition transform hover:-translate-y-1">
-              <CardContent className="p-8 text-white">
-                <h3 className="text-xl font-bold">{feature.title}</h3>
-                <p className="text-gray-300 mt-3">{feature.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+        {/* FAQ Section - SEO rich with common user questions */}
+        <FAQSection />
 
-      {/* FAQ Section */}
-      <section id="faq" className="px-8 py-20 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
-        <div className="mt-6 max-w-3xl mx-auto text-left space-y-6">
-          <details className="border border-white/20 p-4 rounded-lg">
-            <summary className="font-semibold text-lg cursor-pointer">How does JackpotAI work?</summary>
-            <p className="text-gray-300 mt-2">
-              JackpotAI uses AI to analyze historical lottery data to find number trends and generate optimized lottery picks. Smarter picks means better chances of winning.
-            </p>
-          </details>
-        </div>
-      </section>
+        {/* Final CTA Section - For conversion */}
+        <CTASection />
+      </div>
     </>
+  );
+}
+
+// Features Section Component
+function FeatureSection({ isMobile }: { isMobile: boolean }) {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  
+  const controls = useAnimation();
+  
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  const features: Feature[] = [
+    {
+      title: "AI-Powered Predictions",
+      description: "Our advanced algorithms analyze millions of historical lottery draws to identify patterns and generate optimized number combinations.",
+      icon: "✨",
+      gradient: "from-blue-500 to-cyan-400"
+    },
+    {
+      title: "Real-Time Results",
+      description: "Stay updated with the latest Powerball, Mega Millions, and EuroMillions results as soon as they're available.",
+      icon: "⚡️",
+      gradient: "from-purple-500 to-pink-400"
+    },
+    {
+      title: "Historical Analysis",
+      description: "Dive deep into past lottery trends with comprehensive historical data visualizations and insights.",
+      icon: "📊",
+      gradient: "from-green-500 to-emerald-400"
+    },
+    {
+      title: "Multiple Lottery Games",
+      description: "Support for major lottery games including Powerball, Mega Millions, EuroMillions, and more.",
+      icon: "🎮",
+      gradient: "from-red-500 to-orange-400"
+    },
+    {
+      title: "Save Favorite Numbers",
+      description: "Save your lucky numbers or AI-generated combinations for future draws.",
+      icon: "❤️",
+      gradient: "from-yellow-500 to-amber-400"
+    },
+    {
+      title: "Premium Insights",
+      description: "Unlock advanced statistical models and exclusive AI predictions with our premium subscription.",
+      icon: "🔒",
+      gradient: "from-indigo-500 to-blue-400"
+    },
+  ];
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.1 * i,
+        duration: 0.6,
+      }
+    })
+  };
+
+  return (
+    <section ref={ref} className="py-20 md:py-32 relative" id="features">
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-purple-600/10 to-black/20 pointer-events-none" />
+      
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={controls}
+          variants={{
+            visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+          }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-400">
+            Unlock the Power of AI for Lottery Success
+          </h2>
+          <p className="mt-4 text-gray-300 max-w-2xl mx-auto">
+            JackpotAI combines cutting-edge artificial intelligence with comprehensive lottery data to give you the competitive edge.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature, i) => (
+            <motion.div
+              key={i}
+              custom={i}
+              initial="hidden"
+              animate={controls}
+              variants={cardVariants}
+            >
+              <Card className="border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 h-full shadow-xl rounded-xl overflow-hidden">
+                <CardContent className="p-6">
+                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${feature.gradient} flex items-center justify-center text-2xl mb-4`}>
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-300">
+                    {feature.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// App Screenshots Section
+function AppScreenshotsSection({ images }: { images: AppImage[] }) {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  
+  const controls = useAnimation();
+  
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  return (
+    <section ref={ref} className="py-20 relative overflow-hidden" id="screenshots">
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-blue-600/5 to-black/30 pointer-events-none" />
+      
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={controls}
+          variants={{
+            visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+          }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-400">
+            Designed for Lottery Players
+          </h2>
+          <p className="mt-4 text-gray-300 max-w-2xl mx-auto">
+            Intuitive interface with powerful features to maximize your lottery strategy
+          </p>
+        </motion.div>
+
+        <div className="flex flex-nowrap overflow-x-auto py-8 px-4 gap-6 md:justify-center scrollbar-hide">
+          {images.map((image, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.8, y: 50 }}
+              animate={controls}
+              variants={{
+                visible: {
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                  transition: {
+                    delay: 0.2 + (i * 0.1),
+                    duration: 0.5,
+                  }
+                }
+              }}
+              className="flex-shrink-0 relative"
+            >
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/30 to-purple-600/30 rounded-3xl blur-lg opacity-30 transform rotate-3"></div>
+                <div className="border border-white/20 bg-white/5 backdrop-blur-sm p-2 rounded-3xl shadow-2xl relative">
+                  <Image
+                    src={image.src || "/placeholder-screen.png"}
+                    alt={image.alt}
+                    width={220}
+                    height={440}
+                    className="rounded-2xl"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// How It Works
+function HowItWorksSection() {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  
+  const controls = useAnimation();
+  
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  const steps: Step[] = [
+    {
+      number: "01",
+      title: "Select Your Lottery Game",
+      description: "Choose from popular games like Powerball, Mega Millions, or EuroMillions.",
+      icon: "🎮"
+    },
+    {
+      number: "02",
+      title: "Activate AI Mode",
+      description: "Toggle AI mode to use our advanced algorithms for smarter predictions.",
+      icon: "🧠"
+    },
+    {
+      number: "03",
+      title: "Generate Your Numbers",
+      description: "Press the button to get AI-optimized lottery number combinations.",
+      icon: "✨"
+    },
+    {
+      number: "04",
+      title: "Save Your Favorites",
+      description: "Store promising number combinations for future draws.",
+      icon: "❤️"
+    }
+  ];
+
+  return (
+    <section ref={ref} className="py-20 md:py-32 relative" id="how-it-works">
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-indigo-600/5 to-black/20 pointer-events-none" />
+      
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={controls}
+          variants={{
+            visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+          }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-400">
+            How JackpotAI Works
+          </h2>
+          <p className="mt-4 text-gray-300 max-w-2xl mx-auto">
+            Simple to use, powered by complex AI - get better lottery numbers in seconds
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {steps.map((step, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              animate={controls}
+              variants={{
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    delay: 0.2 * i,
+                    duration: 0.5,
+                  }
+                }
+              }}
+              className="relative"
+            >
+              <div className="border border-white/10 bg-white/5 backdrop-blur-sm rounded-xl p-6 h-full relative z-10">
+                <div className="text-5xl font-bold text-white/10 absolute top-4 right-4">{step.number}</div>
+                <div className="text-3xl mb-4">{step.icon}</div>
+                <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
+                <p className="text-gray-300">{step.description}</p>
+              </div>
+              
+              {i < steps.length - 1 && (
+                <div className="hidden lg:block absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 z-0">
+                  <svg width="40" height="10" viewBox="0 0 40 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 5H38.5M38.5 5L33.5 1M38.5 5L33.5 9" stroke="rgba(255,255,255,0.2)" strokeWidth="2"/>
+                  </svg>
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Testimonials Section
+function TestimonialsSection() {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  
+  const controls = useAnimation();
+  
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  const testimonials: Testimonial[] = [
+    {
+      quote: "JackpotAI has completely transformed how I pick lottery numbers. The AI predictions are fascinating and have given me some impressive close calls!",
+      name: "Sarah M.",
+      title: "Premium User",
+      avatar: "/avatar-sarah.jpg"
+    },
+    {
+      quote: "I love the ability to save my favorite number combinations and the real-time results. The UI is beautiful and so easy to use!",
+      name: "Michael T.",
+      title: "Lottery Enthusiast",
+      avatar: "/avatar-michael.jpg"
+    },
+    {
+      quote: "The historical trend analysis gives me confidence in my number selections. I've won several small prizes following JackpotAI's suggestions.",
+      name: "David L.",
+      title: "Weekly Player",
+      avatar: "/avatar-david.jpg"
+    }
+  ];
+
+  return (
+    <section ref={ref} className="py-20 relative" id="testimonials">
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-purple-600/5 to-black/30 pointer-events-none" />
+      
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={controls}
+          variants={{
+            visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+          }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-400">
+            What Our Users Say
+          </h2>
+          <p className="mt-4 text-gray-300 max-w-2xl mx-auto">
+            Join thousands of lottery players who trust JackpotAI for smarter number predictions
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {testimonials.map((testimonial, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              animate={controls}
+              variants={{
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    delay: 0.2 * i,
+                    duration: 0.5,
+                  }
+                }
+              }}
+            >
+              <Card className="border border-white/10 bg-white/5 backdrop-blur-sm h-full shadow-xl rounded-xl overflow-hidden">
+                <CardContent className="p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="mr-4 relative">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"></div>
+                      <div className="absolute inset-0 flex items-center justify-center text-white text-lg font-bold">
+                        {testimonial.name.charAt(0)}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-white font-medium">{testimonial.name}</h4>
+                      <p className="text-gray-400 text-sm">{testimonial.title}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex text-yellow-400 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                        <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                      </svg>
+                    ))}
+                  </div>
+                  
+                  <p className="text-gray-300 italic">"{testimonial.quote}"</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// FAQ Section
+function FAQSection() {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  
+  const controls = useAnimation();
+  
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
+
+  const toggleAccordion = (index: number) => {
+    setActiveIndex(activeIndex === index ? -1 : index);
+  };
+
+  const faqs: FAQ[] = [
+    {
+      question: "How does JackpotAI generate lottery numbers?",
+      answer: "JackpotAI uses advanced artificial intelligence algorithms to analyze historical lottery data, identifying patterns and trends in previous draws. Our system considers factors like frequency, recency, and statistical probability to generate number combinations with potentially higher odds of winning."
+    },
+    {
+      question: "Which lottery games does JackpotAI support?",
+      answer: "JackpotAI currently supports major lottery games including Powerball, Mega Millions, EuroMillions, EuroJackpot, and Lotto Max. We're constantly adding support for additional games based on user requests."
+    },
+    {
+      question: "Does JackpotAI guarantee I'll win the lottery?",
+      answer: "No lottery system can guarantee wins, as lottery draws are ultimately random events. JackpotAI uses statistical analysis and AI to provide smarter number selections that may have better odds based on historical patterns, but all lottery games still involve significant chance."
+    },
+    {
+      question: "What is the difference between free and premium features?",
+      answer: "The free version of JackpotAI provides basic number generation and lottery results. Premium subscribers get access to AI-powered predictions, detailed statistical analysis, unlimited number generations, ad-free experience, and exclusive lottery insights."
+    },
+    {
+      question: "How often are lottery results updated in the app?",
+      answer: "JackpotAI updates lottery results as soon as they become available, typically within minutes of the official draw. Our system constantly monitors official lottery sources to ensure you have the most current information."
+    }
+  ];
+
+  return (
+    <section ref={ref} className="py-20 relative" id="faq">
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-blue-600/5 to-black/30 pointer-events-none" />
+      
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={controls}
+          variants={{
+            visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+          }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-400">
+            Frequently Asked Questions
+          </h2>
+          <p className="mt-4 text-gray-300 max-w-2xl mx-auto">
+            Everything you need to know about JackpotAI
+          </p>
+        </motion.div>
+
+        <div className="max-w-3xl mx-auto">
+          {faqs.map((faq, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={controls}
+              variants={{
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    delay: 0.1 * i,
+                    duration: 0.5,
+                  }
+                }
+              }}
+              className="mb-4"
+            >
+              <div 
+                className="border border-white/10 bg-white/5 backdrop-blur-sm rounded-xl overflow-hidden"
+              >
+                <button
+                  className="w-full text-left p-6 focus:outline-none flex justify-between items-center"
+                  onClick={() => toggleAccordion(i)}
+                >
+                  <h3 className="text-lg font-medium text-white">{faq.question}</h3>
+                  <svg
+                    className={`w-6 h-6 transform transition-transform ${activeIndex === i ? 'rotate-180' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </button>
+                
+                <div 
+                  className={`overflow-hidden transition-all duration-300 ${
+                    activeIndex === i ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="p-6 pt-0 text-gray-300 border-t border-white/10">
+                    {faq.answer}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Final CTA Section
+function CTASection() {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+  
+  const controls = useAnimation();
+  
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  return (
+    <section ref={ref} className="py-20 relative" id="download">
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-900/20 to-black pointer-events-none" />
+      
+      <div className="container mx-auto px-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={controls}
+          variants={{
+            visible: { opacity: 1, scale: 1, transition: { duration: 0.6 } }
+          }}
+          className="max-w-4xl mx-auto text-center bg-gradient-to-r from-blue-600/20 to-purple-600/20 p-10 md:p-16 rounded-3xl border border-white/10 backdrop-blur-md"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            Ready to Transform Your Lottery Strategy?
+          </h2>
+          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            Download JackpotAI now and start generating smarter lottery numbers powered by artificial intelligence.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <a 
+              href="https://apps.apple.com/us/app/jackpotai/id6444195595" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="transform transition hover:scale-105"
+              aria-label="Download JackpotAI on the App Store"
+            >
+              <Image 
+                src="/app-store-badge.svg" 
+                alt="Download on the App Store" 
+                width={200} 
+                height={67}
+              />
+            </a>
+            
+            <Link 
+              href="/how-it-works" 
+              className="text-white bg-white/10 hover:bg-white/20 transition-all border border-white/20 rounded-full px-8 py-3 font-medium"
+            >
+              Learn More
+            </Link>
+          </div>
+          
+          <p className="mt-8 text-sm text-gray-400">
+            Available on iOS 14.0 or later. Free download with optional in-app purchases.
+          </p>
+        </motion.div>
+      </div>
+    </section>
   );
 }

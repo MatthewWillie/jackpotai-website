@@ -1,9 +1,5 @@
-# *
+// public/robots.txt
 User-agent: *
 Allow: /
 
-# Host
-Host: https://jackpotai.app
-
-# Sitemaps
 Sitemap: https://jackpotai.app/sitemap.xml
