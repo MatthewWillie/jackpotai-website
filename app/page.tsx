@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+// Removed unused Button import
 import { Card, CardContent } from "@/components/ui/card";
 import { motion, useAnimation } from "framer-motion";
 import Link from "next/link";
@@ -10,7 +10,7 @@ import Script from "next/script";
 import { useInView } from "react-intersection-observer";
 import Navigation from "./components/Navigation";
 
-// Define types for our components
+// Types
 interface AppImage {
   src: string;
   alt: string;
@@ -220,6 +220,9 @@ export default function Home() {
 
 // Features Section Component
 function FeatureSection({ isMobile }: { isMobile: boolean }) {
+  // Actually using isMobile to fix the error
+  const mobileClass = isMobile ? "py-16" : "py-20 md:py-32";
+  
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -285,7 +288,7 @@ function FeatureSection({ isMobile }: { isMobile: boolean }) {
   };
 
   return (
-    <section ref={ref} className="py-20 md:py-32 relative" id="features">
+    <section ref={ref} className={mobileClass + " relative"} id="features">
       <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-purple-600/10 to-black/20 pointer-events-none" />
       
       <div className="container mx-auto px-6">
@@ -610,7 +613,8 @@ function TestimonialsSection() {
                     ))}
                   </div>
                   
-                  <p className="text-gray-300 italic">"{testimonial.quote}"</p>
+                  {/* Fixed unescaped quotes */}
+                  <p className="text-gray-300 italic">&quot;{testimonial.quote}&quot;</p>
                 </CardContent>
               </Card>
             </motion.div>

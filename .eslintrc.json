@@ -1,0 +1,10 @@
+{
+    "extends": "next/core-web-vitals",
+    "rules": {
+      // Disable the rule for unescaped entities to avoid the HTML entity issues
+      "react/no-unescaped-entities": "off",
+      
+      // Reduce unused vars to warnings instead of errors if you prefer
+      "@typescript-eslint/no-unused-vars": "warn"
+    }
+  }

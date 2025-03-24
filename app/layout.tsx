@@ -2,6 +2,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Link from 'next/link'; // Added Link import
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -68,7 +69,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* App store smart banner */}
         <meta name="apple-itunes-app" content="app-id=6444195595" />
         <script
           type="application/ld+json"
@@ -112,9 +112,10 @@ function Footer() {
           <div>
             <h4 className="text-lg font-bold mb-4">Links</h4>
             <ul className="space-y-2 text-sm">
-              <li><a href="/" className="text-gray-400 hover:text-white transition-colors">Home</a></li>
-              <li><a href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">How It Works</a></li>
-              <li><a href="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+              {/* Fixed: Changed <a> to <Link> for internal navigation */}
+              <li><Link href="/" className="text-gray-400 hover:text-white transition-colors">Home</Link></li>
+              <li><Link href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">How It Works</Link></li>
+              <li><Link href="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link></li>
               <li><a href="https://apps.apple.com/us/app/jackpotai/id6444195595" className="text-gray-400 hover:text-white transition-colors">Download</a></li>
             </ul>
           </div>
