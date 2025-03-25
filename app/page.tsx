@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-// Removed unused Button import
 import { Card, CardContent } from "@/components/ui/card";
 import { motion, useAnimation } from "framer-motion";
 import Link from "next/link";
 import Script from "next/script";
 import { useInView } from "react-intersection-observer";
-import Navigation from "./components/Navigation";
+import Navigation from "../components/Navigation";
+import Head from "next/head";
 
 // Types
 interface AppImage {
@@ -64,6 +64,7 @@ const structuredData = {
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [faqs, setFaqs] = useState<FAQ[]>([]);
   
   // Detect mobile device for responsive adjustments
   useEffect(() => {
@@ -71,9 +72,49 @@ export default function Home() {
       setIsMobile(window.innerWidth < 768);
     };
     
+    // Fix for 100vh on mobile browsers
+    const setVh = () => {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    
     checkMobile();
+    setVh();
+    
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener('resize', setVh);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('resize', setVh);
+    }
+  }, []);
+
+  // Set FAQ data for schema
+  useEffect(() => {
+    // Initialize FAQs
+    setFaqs([
+      {
+        question: "How does JackpotAI generate lottery numbers?",
+        answer: "JackpotAI uses advanced artificial intelligence algorithms to analyze historical lottery data, identifying patterns and trends in previous draws. Our system considers factors like frequency, recency, and statistical probability to generate number combinations with potentially higher odds of winning."
+      },
+      {
+        question: "Which lottery games does JackpotAI support?",
+        answer: "JackpotAI currently supports major lottery games including Powerball, Mega Millions, EuroMillions, EuroJackpot, and Lotto Max. We're constantly adding support for additional games based on user requests."
+      },
+      {
+        question: "Does JackpotAI guarantee I'll win the lottery?",
+        answer: "No lottery system can guarantee wins, as lottery draws are ultimately random events. JackpotAI uses statistical analysis and AI to provide smarter number selections that may have better odds based on historical patterns, but all lottery games still involve significant chance."
+      },
+      {
+        question: "What is the difference between free and premium features?",
+        answer: "The free version of JackpotAI provides basic number generation and lottery results. Premium subscribers get access to AI-powered predictions, detailed statistical analysis, unlimited number generations, ad-free experience, and exclusive lottery insights."
+      },
+      {
+        question: "How often are lottery results updated in the app?",
+        answer: "JackpotAI updates lottery results as soon as they become available, typically within minutes of the official draw. Our system constantly monitors official lottery sources to ensure you have the most current information."
+      }
+    ]);
   }, []);
 
   // App preview images - optimized for SEO with descriptive filenames
@@ -102,19 +143,76 @@ export default function Home() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
   };
 
+  // Create FAQ schema for SEO
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
+  // Create HowTo schema for SEO
+  const howToSchema = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Use JackpotAI for Lottery Number Predictions",
+    "description": "Learn how to use JackpotAI to generate AI-powered lottery number predictions.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Select Your Lottery Game",
+        "text": "Choose from popular games like Powerball, Mega Millions, or EuroMillions."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Activate AI Mode",
+        "text": "Toggle AI mode to use our advanced algorithms for smarter predictions."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Generate Your Numbers",
+        "text": "Press the button to get AI-optimized lottery number combinations."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Save Your Favorites",
+        "text": "Store promising number combinations for future draws."
+      }
+    ]
+  };
+
   return (
     <>
+      {/* Structured data for SEO */}
       <Script
         id="lottery-app-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      
+      <Script
+        id="howto-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
 
       <div className="min-h-screen bg-gradient-to-b from-slate-900 to-black text-white">
         <Navigation />
         
         {/* Hero Section - Optimized for conversions and ASO */}
-        <section className="relative py-20 md:py-32 overflow-hidden">
+        <section className="relative py-20 md:py-32 overflow-hidden screen-height">
           {/* Background elements */}
           <div className="absolute inset-0 bg-gradient-to-b from-blue-600/10 via-purple-600/10 to-transparent pointer-events-none" />
           <div className="absolute inset-0 overflow-hidden">
@@ -188,6 +286,7 @@ export default function Home() {
                     height={770}
                     className="relative rounded-3xl border border-white/20 shadow-2xl"
                     priority
+                    quality={85}
                   />
                   <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-blue-500/20 to-transparent h-1/3 rounded-t-3xl"></div>
                 </div>
@@ -209,7 +308,7 @@ export default function Home() {
         <TestimonialsSection />
 
         {/* FAQ Section - SEO rich with common user questions */}
-        <FAQSection />
+        <FAQSection faqs={faqs} />
 
         {/* Final CTA Section - For conversion */}
         <CTASection />
@@ -402,6 +501,8 @@ function AppScreenshotsSection({ images }: { images: AppImage[] }) {
                     width={220}
                     height={440}
                     className="rounded-2xl"
+                    loading="lazy"
+                    quality={80}
                   />
                 </div>
               </div>
@@ -613,7 +714,6 @@ function TestimonialsSection() {
                     ))}
                   </div>
                   
-                  {/* Fixed unescaped quotes */}
                   <p className="text-gray-300 italic">&quot;{testimonial.quote}&quot;</p>
                 </CardContent>
               </Card>
@@ -626,7 +726,7 @@ function TestimonialsSection() {
 }
 
 // FAQ Section
-function FAQSection() {
+function FAQSection({ faqs }: { faqs: FAQ[] }) {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -645,29 +745,6 @@ function FAQSection() {
   const toggleAccordion = (index: number) => {
     setActiveIndex(activeIndex === index ? -1 : index);
   };
-
-  const faqs: FAQ[] = [
-    {
-      question: "How does JackpotAI generate lottery numbers?",
-      answer: "JackpotAI uses advanced artificial intelligence algorithms to analyze historical lottery data, identifying patterns and trends in previous draws. Our system considers factors like frequency, recency, and statistical probability to generate number combinations with potentially higher odds of winning."
-    },
-    {
-      question: "Which lottery games does JackpotAI support?",
-      answer: "JackpotAI currently supports major lottery games including Powerball, Mega Millions, EuroMillions, EuroJackpot, and Lotto Max. We're constantly adding support for additional games based on user requests."
-    },
-    {
-      question: "Does JackpotAI guarantee I'll win the lottery?",
-      answer: "No lottery system can guarantee wins, as lottery draws are ultimately random events. JackpotAI uses statistical analysis and AI to provide smarter number selections that may have better odds based on historical patterns, but all lottery games still involve significant chance."
-    },
-    {
-      question: "What is the difference between free and premium features?",
-      answer: "The free version of JackpotAI provides basic number generation and lottery results. Premium subscribers get access to AI-powered predictions, detailed statistical analysis, unlimited number generations, ad-free experience, and exclusive lottery insights."
-    },
-    {
-      question: "How often are lottery results updated in the app?",
-      answer: "JackpotAI updates lottery results as soon as they become available, typically within minutes of the official draw. Our system constantly monitors official lottery sources to ensure you have the most current information."
-    }
-  ];
 
   return (
     <section ref={ref} className="py-20 relative" id="faq">
@@ -714,6 +791,8 @@ function FAQSection() {
                 <button
                   className="w-full text-left p-6 focus:outline-none flex justify-between items-center"
                   onClick={() => toggleAccordion(i)}
+                  aria-expanded={activeIndex === i}
+                  aria-controls={`faq-content-${i}`}
                 >
                   <h3 className="text-lg font-medium text-white">{faq.question}</h3>
                   <svg
@@ -728,6 +807,7 @@ function FAQSection() {
                 </button>
                 
                 <div 
+                  id={`faq-content-${i}`}
                   className={`overflow-hidden transition-all duration-300 ${
                     activeIndex === i ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                   }`}
@@ -793,6 +873,7 @@ function CTASection() {
                 alt="Download on the App Store" 
                 width={200} 
                 height={67}
+                loading="lazy"
               />
             </a>
             

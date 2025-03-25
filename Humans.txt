@@ -1,0 +1,16 @@
+/* TEAM */
+  Developer: Matt Willie
+  Contact: matt@jackpotai.app
+  Twitter: @mattwillie
+  From: United States
+
+  UI/UX Designer: Matt Willie
+  Contact: 
+  From: United States
+
+/* SITE */
+  Last update: 2025-03-24
+  Language: English
+  Doctype: HTML5
+  IDE: Xcode, Visual Studio Code
+  Stack: Swift, SwiftUI, Firebase, OpenAI API

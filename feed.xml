@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JackpotAI Blog</title>
+    <description>Latest news, updates, and lottery insights from JackpotAI</description>
+    <link>https://jackpotai.app/blog</link>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 24 Mar 2025 12:00:00 GMT</lastBuildDate>
+    <atom:link href="https://jackpotai.app/feed.xml" rel="self" type="application/rss+xml"/>
+    
+    <item>
+      <title>Introducing AI-Powered Lottery Predictions</title>
+      <description>Learn how our advanced AI algorithms analyze historical lottery data to generate smarter number predictions with higher win probability.</description>
+      <pubDate>Mon, 24 Mar 2025 10:00:00 GMT</pubDate>
+      <link>https://jackpotai.app/blog/introducing-ai-predictions</link>
+      <guid isPermaLink="true">https://jackpotai.app/blog/introducing-ai-predictions</guid>
+      <category>Features</category>
+    </item>
+    
+    <item>
+      <title>How to Get the Most from JackpotAI Premium</title>
+      <description>Discover the advanced features available with JackpotAI Premium and learn how to maximize your lottery strategy using our tools.</description>
+      <pubDate>Fri, 21 Mar 2025 14:30:00 GMT</pubDate>
+      <link>https://jackpotai.app/blog/premium-features-guide</link>
+      <guid isPermaLink="true">https://jackpotai.app/blog/premium-features-guide</guid>
+      <category>Tutorials</category>
+    </item>
+    
+    <item>
+      <title>March 2025 App Update: New Games and Features</title>
+      <description>We've added support for more international lottery games and enhanced our prediction algorithms in our latest app update.</description>
+      <pubDate>Wed, 19 Mar 2025 09:15:00 GMT</pubDate>
+      <link>https://jackpotai.app/blog/march-2025-update</link>
+      <guid isPermaLink="true">https://jackpotai.app/blog/march-2025-update</guid>
+      <category>Updates</category>
+    </item>
+  </channel>
+</rss>

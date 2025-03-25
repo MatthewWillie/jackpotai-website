@@ -1,6 +1,6 @@
 // app/privacy-policy/page.tsx
 import type { Metadata } from 'next';
-import Navigation from '../components/Navigation';
+import Navigation from '../../components/Navigation';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | JackpotAI - AI Lottery Number Generator',

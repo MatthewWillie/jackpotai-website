@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import Navigation from '../components/Navigation';
+import Navigation from '../../components/Navigation';
 
 export const metadata: Metadata = {
   title: 'How JackpotAI Works | AI Lottery Number Generator',
