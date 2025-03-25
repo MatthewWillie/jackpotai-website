@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Script from 'next/script';
 import { headers } from 'next/headers';
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // Optimize font loading with display swap
 const inter = Inter({ 
