@@ -8,10 +8,13 @@ import { headers } from 'next/headers';
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 
-// Optimize font loading with display swap
+// Optimize font loading with preload and display swap
 const inter = Inter({ 
   subsets: ['latin'],
-  display: 'swap' // Improve font loading performance
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+  variable: '--font-inter', // Allow usage in Tailwind with font-sans
 });
 
 export const metadata: Metadata = {
@@ -28,16 +31,28 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-icon.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/apple-icon.png' }
+    ],
   },
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
   robots: {
     index: true,
     follow: true,
     googleBot: {
       index: true,
       follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
   },
   openGraph: {
@@ -68,22 +83,67 @@ export const metadata: Metadata = {
     statusBarStyle: 'black-translucent',
     capable: true,
   },
-  // Added verification metadata for search engines
   verification: {
-    google: 'google-verification-code', // Replace with your actual verification code
-    yandex: 'yandex-verification-code', // Replace with your actual verification code
+    google: 'google-verification-code',
+    yandex: 'yandex-verification-code',
     other: {
-      'baidu': 'baidu-verification-code', // Replace if you need it
+      'baidu': 'baidu-verification-code',
     }
   },
-  // Added alternates for different languages (if you support them)
   alternates: {
-    canonical: 'https://jackpotai.app', // Will be dynamically updated
+    canonical: 'https://jackpotai.app',
     languages: {
       'en-US': 'https://jackpotai.app',
-      // Add other languages if your app supports them
     },
   },
+};
+
+// Extracted schema data to reduce layout parsing time
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "JackpotAI",
+  "url": "https://jackpotai.app/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://jackpotai.app/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+};
+
+const softwareAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "JackpotAI",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "iOS",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "ratingCount": "4",
+    "reviewCount": "4"
+  },
+  "developer": {
+    "@type": "Organization",
+    "name": "JackpotAI",
+    "url": "https://jackpotai.app"
+  }
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "JackpotAI",
+  "url": "https://jackpotai.app",
+  "logo": "https://jackpotai.app/logo.png",
+  "sameAs": [
+    "https://twitter.com/jackpotai_app",
+  ]
 };
 
 export default function RootLayout({
@@ -91,11 +151,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Set a default canonical URL - the dynamic approach is causing TypeScript errors
+  // Set a default canonical URL
   const canonicalUrl = 'https://jackpotai.app';
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={`scroll-smooth ${inter.className}`}>
       <head>
         {/* App store link for iOS */}
         <meta name="apple-itunes-app" content="app-id=6444195595" />
@@ -103,84 +163,52 @@ export default function RootLayout({
         {/* Dynamic canonical tag */}
         <link rel="canonical" href={canonicalUrl} />
         
-        {/* Preconnect to domains for faster loading */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        {/* DNS Prefetch and Preconnect for external domains */}
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Website Schema */}
-        <Script
-          id="website-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "JackpotAI",
-              "url": "https://jackpotai.app/",
-              "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://jackpotai.app/search?q={search_term_string}",
-                "query-input": "required name=search_term_string"
-              }
-            })
-          }}
-        />
+        {/* Preload critical assets */}
+        <link rel="preload" href="/app-icon-small.png" as="image" />
+        <link rel="preload" href="/app-store-badge.svg" as="image" />
         
-        {/* SoftwareApplication Schema */}
-        <Script
-          id="software-app-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
-              "name": "JackpotAI",
-              "applicationCategory": "UtilitiesApplication",
-              "operatingSystem": "iOS",
-              "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
-              },
-              "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "5.0",
-                "ratingCount": "4",
-                "reviewCount": "4"
-              },
-              "developer": {
-                "@type": "Organization",
-                "name": "JackpotAI",
-                "url": "https://jackpotai.app"
-              }
-            })
-          }}
-        />
-        
-        {/* Organization Schema */}
-        <Script
-          id="organization-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "JackpotAI",
-              "url": "https://jackpotai.app",
-              "logo": "https://jackpotai.app/logo.png",
-              "sameAs": [
-                "https://twitter.com/jackpotai_app",
-                // Add other social media profiles if available
-              ]
-            })
-          }}
-        />
+        {/* Critical CSS preload */}
+        <link rel="preload" href="/_next/static/css/app.css" as="style" />
       </head>
-      <body className={inter.className}>
+      <body className="antialiased">
         <main>
           {children}
         </main>
         <Footer />
+        
+        {/* Non-blocking scripts with appropriate loading strategies */}
+        <Script
+          id="website-schema"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema)
+          }}
+        />
+        
+        <Script
+          id="software-app-schema"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(softwareAppSchema)
+          }}
+        />
+        
+        <Script
+          id="organization-schema"
+          type="application/ld+json"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema)
+          }}
+        />
       </body>
     </html>
   );
