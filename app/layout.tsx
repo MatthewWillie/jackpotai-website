@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import Script from 'next/script';
 import { headers } from 'next/headers';
+import { Analytics } from "@vercel/analytics/react"
 
 // Optimize font loading with display swap
 const inter = Inter({ 
