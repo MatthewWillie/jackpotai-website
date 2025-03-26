@@ -7,7 +7,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://jackpotai.app/</loc>
-    <lastmod>2024-03-24</lastmod>
+    <lastmod>2025-03-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -15,6 +15,36 @@
       <image:title>JackpotAI - AI-Powered Lottery Number Generator</image:title>
       <image:caption>Generate smarter lottery numbers with AI-powered predictions</image:caption>
     </image:image>
+    <image:image>
+      <image:loc>https://jackpotai.app/app-mockup-main.png</image:loc>
+      <image:title>JackpotAI App Interface</image:title>
+      <image:caption>Beautiful and intuitive interface for lottery number generation</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://jackpotai.app/jackpotai-powerball-screen.png</image:loc>
+      <image:title>Powerball Number Generator Screen</image:title>
+      <image:caption>AI-powered Powerball number generation interface</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://jackpotai.app/jackpotai-megamillions-screen.png</image:loc>
+      <image:title>Mega Millions Analysis Screen</image:title>
+      <image:caption>Advanced Mega Millions analysis and predictions</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://jackpotai.app/jackpotai-aimode-screen.png</image:loc>
+      <image:title>AI Mode Feature Screen</image:title>
+      <image:caption>Advanced AI mode for smarter number predictions</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://jackpotai.app/jackpotai-results-screen.png</image:loc>
+      <image:title>Lottery Results Screen</image:title>
+      <image:caption>Real-time lottery results and analysis</image:caption>
+    </image:image>
+    <!-- Prepare for multilingual support -->
+    <xhtml:link rel="alternate" hreflang="en" href="https://jackpotai.app/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://jackpotai.app/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jackpotai.app/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jackpotai.app/"/>
   </url>
 
   <!-- Main Pages -->
@@ -42,16 +72,26 @@
   <!-- Legal Pages -->
   <url>
     <loc>https://jackpotai.app/privacy-policy</loc>
-    <lastmod>2024-03-24</lastmod>
+    <lastmod>2025-03-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+    <!-- Prepare for multilingual support -->
+    <xhtml:link rel="alternate" hreflang="en" href="https://jackpotai.app/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://jackpotai.app/es/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jackpotai.app/fr/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jackpotai.app/privacy-policy"/>
   </url>
 
   <url>
     <loc>https://jackpotai.app/terms</loc>
-    <lastmod>2024-03-24</lastmod>
+    <lastmod>2025-03-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+    <!-- Prepare for multilingual support -->
+    <xhtml:link rel="alternate" hreflang="en" href="https://jackpotai.app/terms"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://jackpotai.app/es/terms"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jackpotai.app/fr/terms"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jackpotai.app/terms"/>
   </url>
 
   <!-- App Store Links -->
@@ -80,15 +120,30 @@
   <!-- Support Pages -->
   <url>
     <loc>https://jackpotai.app/support</loc>
-    <lastmod>2024-03-24</lastmod>
+    <lastmod>2025-03-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://jackpotai.app/support-header.jpg</image:loc>
+      <image:title>JackpotAI Support Center</image:title>
+      <image:caption>Get help and support for using JackpotAI</image:caption>
+    </image:image>
+    <!-- Prepare for multilingual support -->
+    <xhtml:link rel="alternate" hreflang="en" href="https://jackpotai.app/support"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://jackpotai.app/es/support"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jackpotai.app/fr/support"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jackpotai.app/support"/>
   </url>
 
   <url>
     <loc>https://jackpotai.app/contact</loc>
-    <lastmod>2024-03-24</lastmod>
+    <lastmod>2025-03-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+    <!-- Prepare for multilingual support -->
+    <xhtml:link rel="alternate" hreflang="en" href="https://jackpotai.app/contact"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://jackpotai.app/es/contact"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://jackpotai.app/fr/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://jackpotai.app/contact"/>
   </url>
 </urlset>
