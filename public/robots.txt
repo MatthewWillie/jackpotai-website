@@ -1,3 +1,4 @@
+# Allow all crawlers
 User-agent: *
 Allow: /
 Allow: /how-it-works
@@ -5,9 +6,41 @@ Allow: /features
 Allow: /faq
 Allow: /privacy-policy
 Allow: /terms
+Allow: /sitemap.xml
+
+# Disallow admin and system files
 Disallow: /api/
 Disallow: /_next/
 Disallow: /static/
-Disallow: /*?*
+Disallow: /admin/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /cgi-bin/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+Disallow: /wp-content/cache/
+Disallow: /wp-content/themes/
+Disallow: /trackback/
+Disallow: /comments/
+Disallow: /feed/
+Disallow: /rss/
+Disallow: /xmlrpc.php
+Disallow: /license.txt
+Disallow: /readme.html
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /private/
 
+# Crawl-delay for specific bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+# Sitemap location
 Sitemap: https://jackpotai.app/sitemap.xml
