@@ -7,6 +7,7 @@ import Script from 'next/script';
 import { headers } from 'next/headers';
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import ServiceWorkerRegistration from './components/ServiceWorkerRegistration';
 
 // Optimize font loading with preload and display swap
 const inter = Inter({ 
@@ -157,6 +158,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`scroll-smooth ${inter.className}`}>
       <head>
+        <ServiceWorkerRegistration />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#000000" />
         {/* App store link for iOS */}
         <meta name="apple-itunes-app" content="app-id=6444195595" />
         

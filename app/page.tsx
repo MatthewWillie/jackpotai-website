@@ -9,6 +9,7 @@ import Script from "next/script";
 import { useInView } from "react-intersection-observer";
 import Navigation from "../components/Navigation";
 import Head from "next/head";
+import OptimizedImage from './components/OptimizedImage';
 
 // Types
 interface AppImage {
@@ -52,19 +53,50 @@ const structuredData = {
   "offers": {
     "@type": "Offer",
     "price": "0",
-    "priceCurrency": "USD"
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
   },
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "5.0",
     "ratingCount": "4"
   },
-  "description": "JackpotAI uses artificial intelligence to analyze lottery data and generate optimized number combinations for Powerball, Mega Millions, EuroMillions, and more."
+  "description": "JackpotAI uses artificial intelligence to analyze lottery data and generate optimized number combinations for Powerball, Mega Millions, EuroMillions, and more.",
+  "screenshot": [
+    {
+      "@type": "ImageObject",
+      "url": "https://jackpotai.app/jackpotai-powerball-screen.png",
+      "caption": "Powerball Number Generator Screen"
+    },
+    {
+      "@type": "ImageObject",
+      "url": "https://jackpotai.app/jackpotai-megamillions-screen.png",
+      "caption": "Mega Millions Analysis Screen"
+    },
+    {
+      "@type": "ImageObject",
+      "url": "https://jackpotai.app/jackpotai-aimode-screen.png",
+      "caption": "AI Mode Feature Screen"
+    }
+  ],
+  "featureList": [
+    "AI-Powered Predictions",
+    "Real-Time Results",
+    "Historical Analysis",
+    "Multiple Lottery Games",
+    "Save Favorite Numbers",
+    "Premium Insights"
+  ],
+  "softwareVersion": "1.0.0",
+  "downloadUrl": "https://apps.apple.com/us/app/jackpotai/id6444195595",
+  "applicationSubCategory": "Lottery",
+  "browserRequirements": "Requires iOS 14.0 or later"
 };
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [faqs, setFaqs] = useState<FAQ[]>([]);
+  const [faqSchema, setFaqSchema] = useState<any>(null);
   
   // Detect mobile device for responsive adjustments
   useEffect(() => {
@@ -117,6 +149,24 @@ export default function Home() {
     ]);
   }, []);
 
+  // Generate FAQ schema after FAQs are loaded
+  useEffect(() => {
+    if (faqs.length > 0) {
+      setFaqSchema({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqs.map(faq => ({
+          "@type": "Question",
+          "name": faq.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": faq.answer
+          }
+        }))
+      });
+    }
+  }, [faqs]);
+
   // App preview images - optimized for SEO with descriptive filenames
   const previewImages: AppImage[] = [
     {
@@ -141,20 +191,6 @@ export default function Home() {
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
-
-  // Create FAQ schema for SEO
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map(faq => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
-      }
-    }))
   };
 
   // Create HowTo schema for SEO
@@ -196,11 +232,13 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       
-      <Script
-        id="faq-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      {faqSchema && (
+        <Script
+          id="faq-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       
       <Script
         id="howto-schema"
@@ -495,14 +533,12 @@ function AppScreenshotsSection({ images }: { images: AppImage[] }) {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/30 to-purple-600/30 rounded-3xl blur-lg opacity-30 transform rotate-3"></div>
                 <div className="border border-white/20 bg-white/5 backdrop-blur-sm p-2 rounded-3xl shadow-2xl relative">
-                  <Image
+                  <OptimizedImage
                     src={image.src || "/placeholder-screen.png"}
                     alt={image.alt}
-                    width={220}
-                    height={440}
-                    className="rounded-2xl"
-                    loading="lazy"
-                    quality={80}
+                    width={300}
+                    height={600}
+                    className="rounded-xl shadow-2xl"
                   />
                 </div>
               </div>

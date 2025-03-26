@@ -1,7 +1,6 @@
 'use client';
 
 import Script from 'next/script';
-import { useEffect, useState } from 'react';
 
 interface FAQ {
   question: string;
@@ -10,37 +9,36 @@ interface FAQ {
 
 interface FAQSchemaProps {
   faqs: FAQ[];
-  mainEntity?: boolean;
+  mainEntity?: boolean; // Keep for backward compatibility
 }
 
-export default function FAQSchema({ faqs, mainEntity = true }: FAQSchemaProps) {
-  const [faqSchema, setFaqSchema] = useState<any>(null);
+export default function FAQSchema({ faqs }: FAQSchemaProps) {
+  // Skip rendering if no FAQs are provided
+  if (!faqs || faqs.length === 0) {
+    return null;
+  }
 
-  useEffect(() => {
-    // Create the FAQ schema structure
-    const schema = {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqs.map(faq => ({
-        "@type": "Question",
-        "name": faq.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": faq.answer
-        }
-      }))
-    };
-
-    setFaqSchema(schema);
-  }, [faqs]);
-
-  if (!faqSchema) return null;
+  // Create the schema directly without useState/useEffect
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
 
   return (
     <Script
       id="faq-schema"
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      // Add strategy to ensure the script is inserted at the right time
+      strategy="afterInteractive"
     />
   );
 }

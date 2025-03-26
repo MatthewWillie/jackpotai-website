@@ -9,7 +9,6 @@ const nextConfig = {
   
   // Additional configs
   reactStrictMode: true,
-  swcMinify: true,
   
   // Image optimization
   images: {
@@ -22,9 +21,6 @@ const nextConfig = {
   
   // Compression enabled by default in production
   compress: true,
-  
-  // Font optimization
-  optimizeFonts: true,
   
   // Security headers for better SEO
   async headers() {

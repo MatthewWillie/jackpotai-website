@@ -1,4 +1,13 @@
 User-agent: *
 Allow: /
+Allow: /how-it-works
+Allow: /features
+Allow: /faq
+Allow: /privacy-policy
+Allow: /terms
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /*?*
 
 Sitemap: https://jackpotai.app/sitemap.xml
