@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import Script from 'next/script';
 import { headers } from 'next/headers';
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import ServiceWorkerRegistration from './components/ServiceWorkerRegistration';
 
@@ -213,6 +213,7 @@ export default function RootLayout({
             __html: JSON.stringify(organizationSchema)
           }}
         />
+        <Analytics />
       </body>
     </html>
   );
