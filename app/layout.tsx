@@ -255,7 +255,7 @@ function Footer() {
                 <li><Link href="/how-it-works" className="text-gray-400 hover:text-white transition-colors">How It Works</Link></li>
                 <li><Link href="/privacy-policy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/#faq" className="text-gray-400 hover:text-white transition-colors">FAQ</Link></li>
-                <li><a href="https://apps.apple.com/us/app/jackpotai/id6444195595" className="text-gray-400 hover:text-white transition-colors" rel="noopener">Download</a></li>
+                <li><a href="https://apps.apple.com/app/apple-store/id6444195595?pt=125362843&ct=Website&mt=8" className="text-gray-400 hover:text-white transition-colors" rel="noopener">Download</a></li>
                 <li><a href="mailto:support@jackpotai.app" className="text-gray-400 hover:text-white transition-colors">Contact Support</a></li>
               </ul>
             </nav>

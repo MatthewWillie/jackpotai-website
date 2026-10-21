@@ -88,7 +88,7 @@ const structuredData = {
     "Premium Insights"
   ],
   "softwareVersion": "1.0.0",
-  "downloadUrl": "https://apps.apple.com/us/app/jackpotai/id6444195595",
+  "downloadUrl": "https://apps.apple.com/app/apple-store/id6444195595?pt=125362843&ct=Website&mt=8",
   "applicationSubCategory": "Lottery",
   "browserRequirements": "Requires iOS 14.0 or later"
 };
@@ -279,7 +279,7 @@ export default function Home() {
                 {/* App Store badge - essential for ASO */}
                 <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
                   <a 
-                    href="https://apps.apple.com/us/app/jackpotai/id6444195595" 
+                    href="https://apps.apple.com/app/apple-store/id6444195595?pt=125362843&ct=Website&mt=8"
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="transform transition hover:scale-105"
@@ -898,7 +898,7 @@ function CTASection() {
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <a 
-              href="https://apps.apple.com/us/app/jackpotai/id6444195595" 
+              href="https://apps.apple.com/app/apple-store/id6444195595?pt=125362843&ct=Website&mt=8"
               target="_blank" 
               rel="noopener noreferrer"
               className="transform transition hover:scale-105"

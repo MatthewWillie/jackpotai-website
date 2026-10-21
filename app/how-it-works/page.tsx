@@ -261,7 +261,7 @@ export default function HowItWorks() {
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <a 
-                href="https://apps.apple.com/us/app/jackpotai/id6444195595" 
+                href="https://apps.apple.com/app/apple-store/id6444195595?pt=125362843&ct=Website&mt=8"
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="transform transition hover:scale-105"

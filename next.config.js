@@ -89,7 +89,7 @@ const nextConfig = {
       },
       {
         source: '/download',
-        destination: 'https://apps.apple.com/us/app/jackpotai/id6444195595',
+        destination: 'https://apps.apple.com/app/apple-store/id6444195595?pt=125362843&ct=Website&mt=8',
         permanent: false, // 307 temporary redirect for external links
       },
     ];
